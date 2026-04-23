@@ -11,13 +11,27 @@ The React SPA (Single Page Application) frontend for the CloudCart E-commerce pl
 *   **Deployment:** NGINX (alpine) serving static files + reverse proxying API requests
 
 ## 🎯 Key Features
-*   **Product Browsing:** View catalog with dynamic categorization.
-*   **Dual Checkout Flows:**
+*   **Product Browsing:** View catalog with dynamic categorization. Public — no login needed.
+*   **Role-Based UX (Admin vs Customer):**
+    *   **ADMIN:** After login → redirected to `/admin`. Navbar shows only `Admin` link. Product cards show a read-only `Stock: N` badge — no buy buttons.
+    *   **CUSTOMER:** After login → redirected to `/products`. Navbar shows `Orders` + `Cart`. Product cards show `Add to Cart` + `Buy Now`.
+*   **Dual Checkout Flows (CUSTOMER only):**
     *   **Buy Now:** Immediate checkout for a single item, bypassing the cart.
     *   **Cart Checkout:** Add multiple items to a persistent cart and check out together.
-*   **Order History & Reorder:** View past orders and easily initiate a new checkout with previous items.
-*   **Admin Dashboard:** Dedicated interface (`/admin`) for users with the `ADMIN` role to adjust stock (optimistic UI updates) and manage the catalog.
+*   **Order History & Reorder (CUSTOMER only):** View past orders with product names + images, and initiate a new checkout with a previous item.
+*   **Admin Dashboard (ADMIN only):** Dedicated `/admin` interface to adjust stock (optimistic UI updates) and manage the full product catalog (create, edit, delete).
 *   **Responsive UI:** Mobile-friendly design using CSS Grid and Flexbox.
+
+## 🗺️ Frontend Routes
+
+| Route | Who can access | Description |
+|-------|---------------|-------------|
+| `/` | Everyone | Home / landing page |
+| `/products` | Everyone | Product catalog grid |
+| `/login` | Everyone | Login + Register form |
+| `/checkout` | CUSTOMER only | Checkout page (Buy Now or Cart mode) |
+| `/orders` | CUSTOMER only | Order history + Reorder |
+| `/admin` | ADMIN only | Product management dashboard |
 
 ## 🗂️ Project Structure
 
