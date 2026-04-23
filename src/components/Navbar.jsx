@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
-import CartDrawer from './CartDrawer';
+import TaskDrawer from './TaskDrawer';
 
 const Navbar = () => {
   const { state, dispatch } = useContext(AppContext);
   const navigate = useNavigate();
-  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isTaskOpen, setIsTaskOpen] = useState(false);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -16,6 +16,10 @@ const Navbar = () => {
     navigate('/login');
   };
 
+  const isManager = state.role === 'MANAGER' || state.role === 'ROLE_MANAGER';
+  const isAdmin = state.role === 'ADMIN' || state.role === 'ROLE_ADMIN';
+  const isDriver = state.role === 'DRIVER' || state.role === 'ROLE_DRIVER';
+
   return (
     <>
       <nav className="glass" style={{
@@ -23,22 +27,21 @@ const Navbar = () => {
         display: 'flex', justifyContent: 'space-between', padding: '1rem 2rem'
       }}>
         <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-          <Link to="/" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>🛒 CloudCart</Link>
-          <Link to="/products">Products</Link>
+          <Link to="/" style={{ fontSize: '1.2rem', fontWeight: 'bold', color: '#fff' }}>🚚 FleetOps</Link>
+          {state.isAuthenticated && <Link to="/vehicles">Vehicles</Link>}
+          {state.isAuthenticated && <Link to="/requests">Requests</Link>}
+          {(isManager || isAdmin) && <Link to="/dashboard">Dashboard</Link>}
         </div>
         
         <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
           {state.isAuthenticated ? (
             <>
-              {(state.role === 'ROLE_ADMIN' || state.role === 'ADMIN') ? (
-                // Admin: only show Admin panel link
+              {isAdmin && (
                 <Link to="/admin" style={{ color: 'var(--accent-primary)' }}>Admin</Link>
-              ) : (
-                // Customer: show Orders and Cart
-                <>
-                  <Link to="/orders">Orders</Link>
-                  <button className="btn-secondary" onClick={() => setIsCartOpen(true)} style={{ position: 'relative' }}>
-                    Cart
+              )}
+              {isDriver && (
+                  <button className="btn-secondary" onClick={() => setIsTaskOpen(true)} style={{ position: 'relative' }}>
+                    Tasks
                     {state.cartItemsCount > 0 && (
                       <span style={{
                         position: 'absolute', top: '-8px', right: '-8px',
@@ -49,10 +52,9 @@ const Navbar = () => {
                       </span>
                     )}
                   </button>
-                </>
               )}
               <span style={{ color: 'var(--text-muted)' }}>|</span>
-              <span>{state.username}</span>
+              <span>{state.username} <small style={{color:'gray'}}>({state.role})</small></span>
               <button onClick={handleLogout} style={{ background: 'transparent', color: 'var(--text-secondary)' }}>Logout</button>
             </>
           ) : (
@@ -61,7 +63,7 @@ const Navbar = () => {
         </div>
       </nav>
       
-      <CartDrawer isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
+      <TaskDrawer isOpen={isTaskOpen} onClose={() => setIsTaskOpen(false)} />
     </>
   );
 };

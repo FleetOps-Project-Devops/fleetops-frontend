@@ -22,10 +22,13 @@ const Login = () => {
         localStorage.setItem('token', res.data.token);
         localStorage.setItem('username', res.data.username);
         localStorage.setItem('role', res.data.role);
-        // Redirect admin to their dashboard, regular users to the product catalog
+        // Redirect based on role
         const role = res.data.role;
         const isAdmin = role === 'ADMIN' || role === 'ROLE_ADMIN';
-        window.location.href = isAdmin ? '/admin' : '/products';
+        const isManager = role === 'MANAGER' || role === 'ROLE_MANAGER';
+        if (isAdmin) window.location.href = '/admin';
+        else if (isManager) window.location.href = '/dashboard';
+        else window.location.href = '/vehicles';
       } else {
         await authAPI.register(formData);
         setIsLogin(true);

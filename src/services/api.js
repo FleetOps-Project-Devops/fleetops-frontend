@@ -39,23 +39,34 @@ export const authAPI = {
   getMe: () => api.get('/auth/me')
 };
 
-export const productAPI = {
-  getProducts: (params) => api.get('/products', { params }),
-  getProduct: (id) => api.get(`/products/${id}`),
-  createProduct: (data) => api.post('/products', data),
-  updateProduct: (id, data) => api.put(`/products/${id}`, data),
-  deleteProduct: (id) => api.delete(`/products/${id}`),
-  updateStock: (id, quantity) => api.patch(`/products/${id}/stock`, { quantity })
+export const vehicleAPI = {
+  getVehicles: (params) => api.get('/api/vehicles', { params }),
+  getVehicle: (id) => api.get(`/api/vehicles/${id}`),
+  createVehicle: (data) => api.post('/api/vehicles', data),
+  updateVehicle: (id, data) => api.put(`/api/vehicles/${id}`, data),
+  deleteVehicle: (id) => api.delete(`/api/vehicles/${id}`),
+  updateStatus: (id, status) => api.patch(`/api/vehicles/${id}/status`, { status }),
+  updateMileage: (id, mileage) => api.patch(`/api/vehicles/${id}/mileage`, { mileage }),
+  getDashboard: () => api.get('/api/vehicles/dashboard'),
+  getInsuranceAlerts: () => api.get('/api/vehicles/alerts/insurance'),
+  getServiceAlerts: () => api.get('/api/vehicles/alerts/service')
 };
 
-export const cartAPI = {
-  getCart: () => api.get('/cart'),
-  addToCart: (productId, quantity = 1) => api.post('/cart/add', { productId, quantity })
+export const taskAPI = {
+  getQueue: () => api.get('/api/tasks'),
+  addTask: (data) => api.post('/api/tasks/add', data),
+  removeTask: (taskId) => api.delete(`/api/tasks/remove/${taskId}`),
+  clearQueue: () => api.delete('/api/tasks/clear')
 };
 
-export const orderAPI = {
-  placeOrder: (data) => api.post('/orders/place', data),
-  getOrders: () => api.get('/orders')
+export const requestAPI = {
+  createRequest: (data) => api.post('/api/requests', data),
+  getRequests: () => api.get('/api/requests'),
+  getRequest: (id) => api.get(`/api/requests/${id}`),
+  getRequestsByVehicle: (vehicleId) => api.get(`/api/requests/vehicle/${vehicleId}`),
+  updateStatus: (id, status) => api.patch(`/api/requests/${id}/status`, { status }),
+  assignTechnician: (id, technician) => api.patch(`/api/requests/${id}/assign`, { technician }),
+  completeRequest: (id, data) => api.patch(`/api/requests/${id}/complete`, data)
 };
 
 export default api;

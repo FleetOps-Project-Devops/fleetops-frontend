@@ -5,11 +5,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from './pages/Home';
-import Products from './pages/Products';
+import Vehicles from './pages/Vehicles';
 import Login from './pages/Login';
-import Orders from './pages/Orders';
+import Requests from './pages/Requests';
 import Admin from './pages/Admin';
-import Checkout from './pages/Checkout';
+import Dashboard from './pages/Dashboard';
 
 const App = () => {
   return (
@@ -18,18 +18,22 @@ const App = () => {
       <div className="page-wrapper">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/products" element={<Products />} />
-          <Route path="/login" element={<Login />} />
-          
-          <Route path="/checkout" element={
+          <Route path="/vehicles" element={
             <ProtectedRoute>
-              <Checkout />
+              <Vehicles />
             </ProtectedRoute>
           } />
+          <Route path="/login" element={<Login />} />
           
-          <Route path="/orders" element={
+          <Route path="/requests" element={
             <ProtectedRoute>
-              <Orders />
+              <Requests />
+            </ProtectedRoute>
+          } />
+
+          <Route path="/dashboard" element={
+            <ProtectedRoute requireAdmin={false}>
+              <Dashboard />
             </ProtectedRoute>
           } />
           

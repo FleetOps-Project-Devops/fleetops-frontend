@@ -5,17 +5,17 @@ const Home = () => {
   return (
     <div className="container" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '60vh', textAlign: 'center' }}>
       <h1 style={{ fontSize: '3.5rem', marginBottom: '1rem', background: 'linear-gradient(to right, var(--accent-primary), #60a5fa)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-        Welcome to CloudCart
+        Welcome to FleetOps
       </h1>
       <p style={{ fontSize: '1.2rem', color: 'var(--text-secondary)', maxWidth: '600px', marginBottom: '2.5rem' }}>
-        Discover premium products built on a robust microservices architecture. Shop with confidence.
+        The next-generation platform for vehicle maintenance and fleet tracking. Keep your fleet running smoothly.
       </p>
       <div style={{ display: 'flex', gap: '1rem' }}>
-        <Link to="/products" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '1.1rem' }}>
-          Browse Products
+        <Link to="/vehicles" className="btn-primary" style={{ padding: '0.8rem 2rem', fontSize: '1.1rem' }}>
+          View Fleet
         </Link>
         <Link to="/login" className="btn-secondary" style={{ padding: '0.8rem 2rem', fontSize: '1.1rem' }}>
-          Login / Register
+          Login
         </Link>
       </div>
     </div>
