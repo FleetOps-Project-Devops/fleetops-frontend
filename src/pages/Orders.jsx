@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { orderAPI } from '../services/api';
+import { orderAPI, productAPI } from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useNavigate } from 'react-router-dom';
 
@@ -8,13 +8,23 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
+  const [productsMap, setProductsMap] = useState({});
+
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const res = await orderAPI.getOrders();
-        setOrders(res.data);
+        const [ordersRes, productsRes] = await Promise.all([
+          orderAPI.getOrders(),
+          productAPI.getProducts()
+        ]);
+        
+        const pMap = {};
+        productsRes.data.forEach(p => pMap[p.id] = p);
+        
+        setProductsMap(pMap);
+        setOrders(ordersRes.data);
       } catch (err) {
-        console.error("Failed to load orders", err);
+        console.error("Failed to load orders or products", err);
       } finally {
         setLoading(false);
       }
@@ -55,22 +65,31 @@ const Orders = () => {
               
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <h4 style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Items</h4>
-                {order.items.map(item => (
-                  <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.95rem', padding: '0.5rem 0' }}>
-                    <div>
-                      <span>Product #{item.productId} <span style={{ color: 'var(--text-muted)', marginLeft: '0.5rem' }}>x{item.quantity}</span></span>
-                      <div style={{ marginTop: '0.25rem' }}>
-                        <button 
-                          onClick={() => navigate('/checkout', { state: { product: { id: item.productId, price: item.priceAtTime, name: `Product #${item.productId}`, imageUrl: '' } } })}
-                          style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', border: '1px solid var(--accent-primary)', borderRadius: '4px', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.75rem' }}
-                        >
-                          Reorder
-                        </button>
+                {order.items.map(item => {
+                  const product = productsMap[item.productId];
+                  const pName = product ? product.name : `Product #${item.productId}`;
+                  const pImg = product ? product.imageUrl : '';
+                  
+                  return (
+                    <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.95rem', padding: '0.5rem 0' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        {pImg && <img src={pImg} alt={pName} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />}
+                        <div>
+                          <span>{pName} <span style={{ color: 'var(--text-muted)', marginLeft: '0.5rem' }}>x{item.quantity}</span></span>
+                          <div style={{ marginTop: '0.25rem' }}>
+                            <button 
+                              onClick={() => navigate('/checkout', { state: { product: { id: item.productId, price: item.priceAtTime, name: pName, imageUrl: pImg } } })}
+                              style={{ background: 'rgba(59, 130, 246, 0.1)', color: 'var(--accent-primary)', border: '1px solid var(--accent-primary)', borderRadius: '4px', padding: '0.2rem 0.5rem', cursor: 'pointer', fontSize: '0.75rem' }}
+                            >
+                              Reorder
+                            </button>
+                          </div>
+                        </div>
                       </div>
+                      <span style={{ fontWeight: 'bold' }}>₹{item.priceAtTime ? item.priceAtTime.toFixed(2) : '0.00'}</span>
                     </div>
-                    <span style={{ fontWeight: 'bold' }}>₹{item.priceAtTime ? item.priceAtTime.toFixed(2) : '0.00'}</span>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           ))}
