@@ -1,5 +1,5 @@
-{
-  "name": "cloudcart-frontend",
+﻿{
+  "name": "fleetops-frontend",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -22,3 +22,4 @@
     "react-router-dom": "^7.14.2"
   }
 }
+

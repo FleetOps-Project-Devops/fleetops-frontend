@@ -1,5 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
-import { cartAPI } from '../services/api';
+import { taskAPI } from '../services/api';
 
 export const AppContext = createContext();
 
@@ -44,8 +44,8 @@ export const AppProvider = ({ children }) => {
   const fetchCartCount = async () => {
     if (!state.isAuthenticated) return;
     try {
-      const res = await cartAPI.getCart();
-      const count = res.data.items?.reduce((acc, item) => acc + item.quantity, 0) || 0;
+      const res = await taskAPI.getQueue();
+      const count = res.data.tasks?.length || 0;
       dispatch({ type: 'SET_CART_COUNT', payload: count });
     } catch (err) {
       console.error("Failed to fetch cart count", err);
