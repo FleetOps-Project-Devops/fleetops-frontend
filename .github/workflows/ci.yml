@@ -28,7 +28,7 @@ jobs:
       dockerfile_path: Dockerfile
       image_name: fleetops-frontend
       docker_username: johann2003
-      sonar_project_key: fleetops-frontend
+      sonar_project_key: FleetOps-Frontend
       run_sonar: ${{ github.ref_name == 'develop' || github.ref_name == 'main' }}
       run_snyk: ${{ github.ref_name == 'develop' || github.ref_name == 'main' }}
       push_image: ${{ github.event_name == 'push' && (github.ref_name == 'develop' || github.ref_name == 'main') }}
