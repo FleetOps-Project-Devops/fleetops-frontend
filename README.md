@@ -1,15 +1,15 @@
-# 🖥️ FleetOps Frontend
+# FleetOps Frontend
 
 The React Single Page Application (SPA) for the FleetOps Vehicle Maintenance Platform. It provides a stunning, responsive, and dynamic user interface with role-based routing for Drivers, Managers, and Admins.
 
-## 🛠️ Tech Stack
+## Tech Stack
 *   **Framework:** React 18 + Vite
 *   **Routing:** React Router v6
 *   **State Management:** React Context API + `useReducer`
 *   **Styling:** Vanilla CSS with custom design system (Glassmorphism, Dark Theme)
 *   **API Client:** Axios (with automatic JWT interceptors)
 
-## 🎯 Features
+## Features
 *   **Role-Based Navigation:** 
     *   **Drivers:** View assigned vehicles and create maintenance tasks.
     *   **Managers:** View KPI Dashboard and approve/manage Service Requests.
@@ -19,7 +19,7 @@ The React Single Page Application (SPA) for the FleetOps Vehicle Maintenance Pla
 *   **Service History:** A detailed timeline of all vehicle repair requests and their workflow states.
 *   **Token Expiry Handling:** Automatically logs the user out and redirects to the login screen if the JWT expires.
 
-## 🚀 Running Locally
+## Running Locally
 
 ### Prerequisites
 *   Node.js (v18+)
@@ -42,7 +42,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 npm run dev
 ```
 
-## 🐳 Docker (Production Build)
+## Docker (Production Build)
 
 The Dockerfile builds the static assets and serves them via NGINX.
 
